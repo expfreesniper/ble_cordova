@@ -97,11 +97,11 @@ var app = {
             }
         })[0];
 
-        if (characteristic.indexOf('WriteWithoutResponse') > -1) {
+        //if (characteristic.indexOf('WriteWithoutResponse') > -1) {
             app.writeWithoutResponse = true;
-        } else {
-            app.writeWithoutResponse = false;
-        }
+        //} else {
+        //    app.writeWithoutResponse = false;
+       // }
 
     },
     onData: function(data) { // data received from Arduino
