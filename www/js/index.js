@@ -129,7 +129,8 @@ var app = {
             alert("Failed writing data to the trekker le");
         };
 
-        var data = bytesToHex(stringToBytes(messageInput.value));
+        //var data = bytesToHex(stringToBytes(messageInput.value));
+	var data = stringToBytes(messageInput.value);
         var deviceId = event.target.dataset.deviceId;
 
         if (app.writeWithoutResponse) {
