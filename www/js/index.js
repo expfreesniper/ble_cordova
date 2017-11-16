@@ -42,9 +42,9 @@ function bytesToHex(bytes) {
 
 // this is Nordic's UART service
 var trekker = {
-    serviceUUID: '0000FFE0-0000-1000-8000-00805F9B34FB',
-    txCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB', // transmit is from the phone's perspective
-    rxCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB'  // receive is from the phone's perspective
+    serviceUUID: 'FFE0',
+    txCharacteristic: 'FFE1', // transmit is from the phone's perspective
+    rxCharacteristic: 'FFE1'  // receive is from the phone's perspective
 };
 
 var app = {
@@ -74,7 +74,7 @@ var app = {
             html = '<b>' + device.name + '</b><br/>' +
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
                 'DeviceID:' + device.id;
-	alert(JSON.stringify(device));
+	//alert(JSON.stringify(device));
         listItem.dataset.deviceId = device.id;
         listItem.innerHTML = html;
         deviceList.appendChild(listItem);
