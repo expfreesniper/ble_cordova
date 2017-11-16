@@ -74,7 +74,7 @@ var app = {
             html = '<b>' + device.name + '</b><br/>' +
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
                 'DeviceID:' + device.id;
-
+	alert(JSON.stringify(device));
         listItem.dataset.deviceId = device.id;
         listItem.innerHTML = html;
         deviceList.appendChild(listItem);
