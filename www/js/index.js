@@ -97,7 +97,7 @@ var app = {
             }
         })[0];
 
-        if (characteristic.properties.indexOf('WriteWithoutResponse') > -1) {
+        if (characteristic.indexOf('WriteWithoutResponse') > -1) {
             app.writeWithoutResponse = true;
         } else {
             app.writeWithoutResponse = false;
