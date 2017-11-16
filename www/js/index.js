@@ -34,9 +34,9 @@ function stringToBytes(string) {
 
 // this is Nordic's UART service
 var trekker = {
-    serviceUUID: '0000FFE0-0000-1000-8000-00805F9B34FB',
-    txCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB', // transmit is from the phone's perspective
-    rxCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB'  // receive is from the phone's perspective
+    serviceUUID: '0xFFE0-0000-1000-8000-00805F9B34FB',
+    txCharacteristic: '0xFFE1-0000-1000-8000-00805F9B34FB', // transmit is from the phone's perspective
+    rxCharacteristic: '0xFFE1-0000-1000-8000-00805F9B34FB'  // receive is from the phone's perspective
 };
 
 var app = {
