@@ -34,9 +34,9 @@ function stringToBytes(string) {
 
 // this is Nordic's UART service
 var trekker = {
-    serviceUUID: 0xFFE0,
-    txCharacteristic: 0xFFE1, // transmit is from the phone's perspective
-    rxCharacteristic: 0xFFE1  // receive is from the phone's perspective
+    serviceUUID: '0000FFE0-0000-1000-8000-00805F9B34FB',
+    txCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB', // transmit is from the phone's perspective
+    rxCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB'  // receive is from the phone's perspective
 };
 
 var app = {
@@ -65,7 +65,7 @@ var app = {
         var listItem = document.createElement('li'),
             html = '<b>' + device.name + '</b><br/>' +
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
-                device.id;
+                'DeviceID:' + device.id;
 
         listItem.dataset.deviceId = device.id;
         listItem.innerHTML = html;
@@ -74,9 +74,9 @@ var app = {
     connect: function(e) {
         var deviceId = e.target.dataset.deviceId,
             onConnect = function(peripheral) {
-                app.determineWriteType(peripheral);
+                		//app.determineWriteType(peripheral);
 				//resultDiv.innerHTML = JSON.stringify(peripheral, null, 2);
-				//app.writeWithoutResponse = false;
+		app.writeWithoutResponse = false;
                 // subscribe for incoming data
                 ble.startNotification(deviceId, trekker.serviceUUID, trekker.rxCharacteristic, app.onData, app.onError);
                 sendButton.dataset.deviceId = deviceId;
@@ -97,11 +97,11 @@ var app = {
             }
         })[0];
 
-        //if (characteristic.indexOf('WriteWithoutResponse') > -1) {
+        if (characteristic.indexOf('WriteWithoutResponse') > -1) {
             app.writeWithoutResponse = true;
-        //} else {
-        //    app.writeWithoutResponse = false;
-       // }
+        } else {
+            app.writeWithoutResponse = false;
+        }
 
     },
     onData: function(data) { // data received from Arduino
