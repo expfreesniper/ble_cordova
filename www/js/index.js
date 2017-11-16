@@ -32,11 +32,19 @@ function stringToBytes(string) {
     return array.buffer;
 }
 
+function bytesToHex(bytes) {
+    var string = [];
+    for (var i = 0; i < bytes.length; i++) {
+      string.push("0x" + ("0"+(bytes[i].toString(16))).substr(-2).toUpperCase());
+    }
+    return string.join(" ");
+}
+
 // this is Nordic's UART service
 var trekker = {
-    serviceUUID: '0000FFE0-0000-1000-8000-00805F9B34FB',
-    txCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB', // transmit is from the phone's perspective
-    rxCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB'  // receive is from the phone's perspective
+    serviceUUID: stringToBytes('0000FFE0-0000-1000-8000-00805F9B34FB'),
+    txCharacteristic: stringToBytes('0000FFE1-0000-1000-8000-00805F9B34FB'), // transmit is from the phone's perspective
+    rxCharacteristic: stringToBytes('0000FFE1-0000-1000-8000-00805F9B34FB')  // receive is from the phone's perspective
 };
 
 var app = {
