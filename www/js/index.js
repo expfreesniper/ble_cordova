@@ -74,9 +74,9 @@ var app = {
     connect: function(e) {
         var deviceId = e.target.dataset.deviceId,
             onConnect = function(peripheral) {
-                //app.determineWriteType(peripheral);
-				resultDiv.innerHTML = JSON.stringify(peripheral, null, 2);
-				app.writeWithoutResponse = false;
+                app.determineWriteType(peripheral);
+				//resultDiv.innerHTML = JSON.stringify(peripheral, null, 2);
+				//app.writeWithoutResponse = false;
                 // subscribe for incoming data
                 ble.startNotification(deviceId, trekker.serviceUUID, trekker.rxCharacteristic, app.onData, app.onError);
                 sendButton.dataset.deviceId = deviceId;
@@ -87,7 +87,7 @@ var app = {
 
         ble.connect(deviceId, onConnect, app.onError);
     },
-    /*determineWriteType: function(peripheral) {
+    determineWriteType: function(peripheral) {
         // Adafruit nRF8001 breakout uses WriteWithoutResponse for the TX characteristic
         // Newer trekker devices use Write Request for the TX characteristic
 
@@ -103,7 +103,7 @@ var app = {
             app.writeWithoutResponse = false;
         }
 
-    },*/
+    },
     onData: function(data) { // data received from Arduino
         console.log(data);
         resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + bytesToString(data) + "<br/>";
