@@ -42,9 +42,9 @@ function bytesToHex(bytes) {
 
 // this is Nordic's UART service
 var trekker = {
-    serviceUUID: stringToBytes('0000FFE0-0000-1000-8000-00805F9B34FB'),
-    txCharacteristic: stringToBytes('0000FFE1-0000-1000-8000-00805F9B34FB'), // transmit is from the phone's perspective
-    rxCharacteristic: stringToBytes('0000FFE1-0000-1000-8000-00805F9B34FB')  // receive is from the phone's perspective
+    serviceUUID: '0000FFE0-0000-1000-8000-00805F9B34FB',
+    txCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB', // transmit is from the phone's perspective
+    rxCharacteristic: '0000FFE1-0000-1000-8000-00805F9B34FB'  // receive is from the phone's perspective
 };
 
 var app = {
