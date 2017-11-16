@@ -75,7 +75,8 @@ var app = {
         var deviceId = e.target.dataset.deviceId,
             onConnect = function(peripheral) {
                 //app.determineWriteType(peripheral);
-				app.writeWithoutResponse = true;
+				resultDiv.innerHTML = JSON.stringify(peripheral, null, 2);
+				app.writeWithoutResponse = false;
                 // subscribe for incoming data
                 ble.startNotification(deviceId, trekker.serviceUUID, trekker.rxCharacteristic, app.onData, app.onError);
                 sendButton.dataset.deviceId = deviceId;
