@@ -16,7 +16,70 @@
 /* global detailPage, resultDiv, messageInput, sendButton, disconnectButton */
 /* global ble  */
 /* jshint browser: true , devel: true*/
-'use strict';
+
+
+var prefix = "s";
+var suffix = "e";
+var login = "L";
+var userpwd = "U";
+var adminpwd = "A";
+var powercmdON = "PN";
+var powercmdOFF = "PF";
+var throttle = "T";
+var setBTname = "N";
+var errorMsg = "E";
+
+var pwd = "0000        ";
+
+
+var $$ = Dom7;
+
+// Initialize your app
+var myApp = new Framework7({
+	modalTitle: 'Trekker',
+	swipePanel: 'left',
+	onPageInit: function (page) {
+ 
+    }	
+	//domCache: true
+/*	template7Pages: true,
+    onAjaxStart: function (xhr) {
+        myApp.showPreloader();
+    },
+    onAjaxComplete: function (xhr) {
+        myApp.hidePreloader();
+    }*/	
+});
+
+var loginview = myApp.addView('#loginview');
+var indexview = myApp.addView('#indexview');
+//var scanview = myApp.addView('#scanview', {
+    // Because we use fixed-through navbar we can enable dynamic navbar
+	// dynamicNavbar: true
+	//}
+var aboutview = myApp.addView('#aboutview');
+
+
+var numpadInline = myApp.keypad({
+  input: '#numpad-inline',
+  container: '#numpad-inline-container',
+  toolbar: false,
+  valueMaxLength: 4,
+  dotButton: true,
+  //formatValue: function(p, value) {
+	//value = value.toString();
+	//return ('****').substring(0, value.length) + ('____').substring(0, 4 - value.length);
+	//return (value).substring(0, value.length);
+  //},
+  onChange: function (p, value) {
+	value = value.toString();
+	console.log("onchange: string:"+value);
+	if (value.length === 4) {
+		setTimeout(function(){app.connect()},1000);
+	}
+  }
+});
+
 
 // ASCII only
 function bytesToString(buffer) {
@@ -40,11 +103,24 @@ function bytesToHex(bytes) {
     return string.join(" ");
 }
 
+//pad('            ',number,true|false);
+function pad(pad, str, padLeft) {
+  if (typeof str === 'undefined') 
+    return pad;
+  if (padLeft) {
+    return (pad + str).slice(-pad.length);
+  } else {
+    return (str + pad).substring(0, pad.length);
+  }
+}
+
 // this is Nordic's UART service
 var trekker = {
     serviceUUID: 'FFE0',
     txCharacteristic: 'FFE1', // transmit is from the phone's perspective
-    rxCharacteristic: 'FFE1'  // receive is from the phone's perspective
+    rxCharacteristic: 'FFE1',  // receive is from the phone's perspective
+	deviceId:"",
+	deviceName:""
 };
 
 var app = {
@@ -54,13 +130,28 @@ var app = {
     },
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        refreshButton.addEventListener('touchstart', this.refreshDeviceList, false);
-        sendButton.addEventListener('click', this.sendData, false);
+        //refreshButton.addEventListener('touchstart', this.refreshDeviceList, false);
+        sendButton.addEventListener('click', this.sendDataStart, false);
         disconnectButton.addEventListener('touchstart', this.disconnect, false);
-        deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
+        //deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
+		deviceList.addEventListener('touchstart', this.showLogin, true); 
+				;
     },
+	showLogin:function(event){
+		if (event.target.dataset.deviceId)
+			$$("#loginview").addClass("modal-in");
+	},
     onDeviceReady: function() {
-        app.refreshDeviceList();
+        ble.isEnabled(
+            function() {
+				app.refreshDeviceList();
+                console.log("Bluetooth is enabled");
+            },
+            function() {
+				alert("Bluetooth is *not* enabled");
+                console.log("Bluetooth is *not* enabled");
+            }
+        ); 		
     },
     refreshDeviceList: function() {
         deviceList.innerHTML = ''; // empties the list
@@ -70,35 +161,48 @@ var app = {
         // ble.scan([], 5, app.onDiscoverDevice, app.onError);
     },
     onDiscoverDevice: function(device) {
+		myApp.showPreloader();
         var listItem = document.createElement('li'),
             html = '<b>' + device.name + '</b><br/>' +
                 'RSSI: ' + device.rssi + '&nbsp;|&nbsp;' +
                 'DeviceID:' + device.id;
 	//alert(JSON.stringify(device));
         listItem.dataset.deviceId = device.id;
+		
+		trekker.deviceId = device.id;
+		trekker.deviceName = device.name;
+       
         listItem.innerHTML = html;
         deviceList.appendChild(listItem);
+		myApp.hidePreloader();
     },
-    connect: function(e) {
-        var deviceId = e.target.dataset.deviceId,
-            onConnect = function(peripheral) {
-                		//app.determineWriteType(peripheral);
-				//resultDiv.innerHTML = JSON.stringify(peripheral, null, 2);
-		app.writeWithoutResponse = true;
-                // subscribe for incoming data
-                ble.startNotification(deviceId, trekker.serviceUUID, trekker.rxCharacteristic, app.onData, app.onError);
-                sendButton.dataset.deviceId = deviceId;
-                disconnectButton.dataset.deviceId = deviceId;
-                resultDiv.innerHTML = "";
-                app.showDetailPage();
-            };
+    connect: function() {
+		console.log("connecting...");
+		$$("#indexview").addClass("active");
+		
+		var pwd = $$("#numpad-inline").val().toString();
+		console.log("connecting string"+pwd);
+		if (pwd.length===4){
+			
+				onConnect = function(peripheral) {
+					console.log("connected");
+					myApp.showPreloader();
+							//app.determineWriteType(peripheral);
+							//resultDiv.innerHTML = JSON.stringify(peripheral, null, 2);
+					app.writeWithoutResponse = false;
+					// subscribe for incoming data
+					ble.startNotification(trekker.deviceId, trekker.serviceUUID, trekker.rxCharacteristic, app.onData, app.onError);
+					sendButton.dataset.deviceId = trekker.deviceId;
+					disconnectButton.dataset.deviceId = trekker.deviceId;
+					resultDiv.innerHTML = "";
+					app.authenticate();
+					app.showDetailPage();
+				};
 
-        ble.connect(deviceId, onConnect, app.onError);
+			ble.connect(trekker.deviceId, onConnect, app.onError);
+		}
     },
     determineWriteType: function(peripheral) {
-        // Adafruit nRF8001 breakout uses WriteWithoutResponse for the TX characteristic
-        // Newer trekker devices use Write Request for the TX characteristic
-
         var characteristic = peripheral.characteristics.filter(function(element) {
             if (element.characteristic.toLowerCase() === trekker.txCharacteristic) {
                 return element;
@@ -112,12 +216,62 @@ var app = {
         }
 
     },
-    onData: function(data) { // data received from Arduino
+    onData: function(data) { // data received
         console.log(data);
         resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + bytesToString(data) + "<br/>";
         resultDiv.scrollTop = resultDiv.scrollHeight;
+		
+		levelBar = $$('.level');
+		
+		var battery = {"charging":false,"level":85};
+		
+		if (battery.charging) {
+		  levelBar.addClass('charging');
+		} else if (battery.level > 65) {
+		  levelBar.addClass('high');
+		} else if (battery.level >= 35 ) {
+		  levelBar.addClass('med');
+		} else {
+		  levelBar.addClass('low');
+		};
+		
+		levelBar.css('width', level + '%');
     },
-    sendData: function(event) { // send data to Arduino
+	authenticate: function() { 
+        var success = function() {
+            console.log("authenticate success");
+            //resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + messageInput.value + "<br/>";
+            //resultDiv.scrollTop = resultDiv.scrollHeight;
+			$$("#loginview").removeClass("modal-in");
+        };
+
+        var failure = function() {
+			alert('Failed logging in to Trekker');
+        };
+		console.log("authenticate...");
+		var strtoSend = pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false);
+		
+		console.log("send connect string"+strtoSend);
+		
+		var data = stringToBytes(strtoSend);
+		
+        if (app.writeWithoutResponse) {
+            ble.writeWithoutResponse(
+                trekker.deviceId,
+                trekker.serviceUUID,
+                trekker.txCharacteristic,
+                data, success, failure
+            );
+        } else {
+            ble.write(
+                trekker.deviceId,
+                trekker.serviceUUID,
+                trekker.txCharacteristic,
+                data, success, failure
+            );
+        }		
+	},
+    sendDataStart: function(event) { // send data to Arduino
 
         var success = function() {
             console.log("success");
@@ -129,8 +283,7 @@ var app = {
             alert("Failed writing data to the trekker le");
         };
 
-        //var data = bytesToHex(stringToBytes(messageInput.value));
-	var data = stringToBytes(messageInput.value);
+		var data = stringToBytes(prefix+powercmdON+suffix);
         var deviceId = event.target.dataset.deviceId;
 
         if (app.writeWithoutResponse) {
@@ -157,12 +310,17 @@ var app = {
     showMainPage: function() {
         mainPage.hidden = false;
         detailPage.hidden = true;
+		location.href='index.html';
     },
     showDetailPage: function() {
         mainPage.hidden = true;
         detailPage.hidden = false;
+		myApp.hidePreloader();
     },
     onError: function(reason) {
+		myApp.hidePreloader();
         alert("ERROR: " + JSON.stringify(reason)); // real apps should use notification.alert
     }
 };
+
+
