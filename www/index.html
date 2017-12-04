@@ -1,34 +1,162 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
-        
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Trekker BLE</title>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+	
+    <title>Trekker</title>
+
+    <link rel="stylesheet" href="css/framework7.ios.min.css">
+	<link rel="stylesheet" href="css/framework7.material.min.css">
+	<link rel="stylesheet" href="css/framework7.keypad.min.css">
+
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="stylesheet" href="css/framework7-icons.css">
+	<link rel="stylesheet" href="css/framework7.ios.colors.min.css">
+	<link rel="stylesheet" href="css/framework7.material.colors.min.css">
+
     </head>
-    <body>
-        <div class="app">
-            <h1>Trekker BLE</h1>
-            <div id="mainPage">
-                <ul id="deviceList">                    
-                </ul>
-                <button id="refreshButton">Refresh</button>
-            </div>
-            <div id="detailPage">
-                <div id="resultDiv"></div>
-                <div>
-                    <input type="text" id="messageInput" value="Hello"/>
-                    <button id="sendButton">Send</button>                    
-                </div>
-                <button id="disconnectButton">Disconnect</button>
-            </div>            
-        </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-    </body>
+	<body class="">
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>	
+	<!-- Views -->
+	<div class="views tabs toolbar-through page-bg">
+	  <!-- Your main view, should have "view-main" class -->
+	  
+	  <!--<div id="loginscreen" class="login-screen modal-in">-->
+	  <div id="loginview" class="view login-screen view-main" data-page="loginpage">
+		<div class="pages">
+		  <div data-page="loginpage" class="page no-navbar no-swipeback page-on-center no-toolbar-bottom">
+		  
+			<div class="page-content login-screen-content">
+			<div class="login-screen-title center"><h3>Enter Passcode</h3></div>
+
+				<form>
+					<div class="content-block passcode-input">
+						<input type="text" value="____" id="numpad-inline" readonly="">
+					</div>
+					
+					<div class="content-block passcode-numpad">
+						<div style="padding:0; margin-right:-15px; width:auto" class="content-block-inner">
+							<div id="numpad-inline-container">
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		  </div>
+		</div>	  
+	  </div>	  
+	  
+	  
+	  <div id="indexview" class="view tab view-main" data-page="indexpage">
+		<!-- Pages container, because we use fixed navbar and toolbar, it has additional appropriate classes-->
+		<div class="pages navbar-fixed toolbar-fixed">
+		  <!-- Page, "data-page" contains page name -->
+		  <div data-page="indexpage" class="page">
+
+			<div class="navbar">
+				<div class="navbar-inner">
+					<div class="left">
+						<a href="#" class="toggle-navbar link icon-only">
+							<i class="icon icon-bars"></i>
+						</a>				
+					</div>			
+					<div class="center">Trekker App</div>
+					<div class="right">
+						<a href="#" data-popover=".popover-links" class="link open-popover"><i class="icon f7-icons">world</i></a>
+					</div>
+				</div>
+			</div>  
+
+			<!-- Scrollable page content -->
+			<div class="page-content">
+					<div id="detailPage">
+						<div id="resultDiv"></div>
+							<div class="battery">
+								<div class="level">
+
+								</div>
+							</div>						
+						<div>
+							<input type="hidden" id="messageInput" value="Hello"/>
+							<button class="button" id="sendButton">Start Engine</button>                    
+						</div>
+
+					</div>            
+		
+			</div>
+		  </div>
+		</div>
+	  </div>
+	  
+	<div id="aboutview" class="view tab" data-page="aboutpage">
+		<!-- We can make with view with navigation, let's add Top Navbar-->
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="left">
+					<a href="#" class="toggle-navbar link icon-only">
+						<i class="icon icon-bars"></i>
+					</a>				
+				</div>			
+				<div class="center">Trekker App</div>
+				<div class="right">
+					<a href="#" data-popover=".popover-links" class="link open-popover"><i class="icon f7-icons">world</i></a>
+				</div>
+			</div>
+		</div> 
+		<div class="pages navbar-through">
+		  <div data-page="aboutpage" class="page">
+		  
+			<div class="page-content">
+			  <div class="content-block">
+					Trekker was founded in 2015. We are located in Hersonissos, Heraklion, Crete.
+			  </div>
+			</div>
+		  </div>
+		</div>
+	</div>
+	  
+      <!-- Bottom Tabbar-->
+      <div class="toolbar toolbar-bottom tabbar tabbar-labels">
+        <div class="toolbar-inner">
+			<a href="#index-view" class="tab-link active"> <i class="icon f7-icons">home</i><span class="tabbar-label">Home</span></a>
+			
+			<a id="disconnectButton" href="#" class="tab-link"> <i class="icon f7-icons">logout</i><span class="tabbar-label">Disconnect</span></a>
+			
+			<a href="#" onclick="app.refreshDeviceList()" class="tab-link">
+				<i class="icon f7-icons">reload</i> <span class="tabbar-label">Refresh</span>
+			</a>			
+			
+			<a href="#about-view" class="tab-link"> <i class="icon f7-icons">info</i><span class="tabbar-label">About</span></a>			
+			
+		</div>
+      </div>	  
+
+	  <div class="popupTrekker no-navbar no-swipeback page-on-center no-toolbar-bottom">
+		<div id="mainPage">
+		<div class="content-block-title center"><h3>Available Trekkers</h3></div>
+			
+			<ul id="deviceList">
+				<li>- Trekker List -</li>
+			</ul>
+			<!--<button id="refreshButton">Refresh</button>-->
+		</div>    
+	  </div>
+	  
+    </div>
+
+
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/framework7.min.js"></script>
+	<script type="text/javascript" src="js/framework7.keypad.min.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script>app.initialize();</script>
+	</body>
 </html>
