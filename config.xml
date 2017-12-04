@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="rocks.loginov.cordova_bluetooth_terminal" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Cordova Bluetooth Terminal</name>
-    <description>Simple app for communication with devices via bluetooth</description>
-    <author email="danila@loginov.rocks" href="https://loginov.rocks">Danila Loginov</author>
+<widget id="gr.multiapp.trekker_ble" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Trekker</name>
+    <description>Trekker App - Live the experience</description>
+    <author email="info@multiapp.gr" href="https://www.multiapp.gr">Dimitrios Makris</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -12,9 +12,48 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <platform name="android">
+        <icon density="ldpi" src="res/icons/android/ldpi.png" />
+        <icon density="mdpi" src="res/icons/android/mdpi.png" />
+        <icon density="hdpi" src="res/icons/android/hdpi.png" />
+        <icon density="xhdpi" src="res/icons/android/xhdpi.png" />
+        <icon density="xxhdpi" src="res/icons/android/xxhdpi.png" />
+        <icon density="xxxhdpi" src="res/icons/android/xxxhdpi.png" />
+        <splash density="port-ldpi" src="res/screens/android/splash-port-ldpi.png" />
+        <splash density="port-mdpi" src="res/screens/android/splash-port-mdpi.png" />
+        <splash density="port-hdpi" src="res/screens/android/splash-port-hdpi.png" />
+        <splash density="port-xhdpi" src="res/screens/android/splash-port-xhdpi.png" />
+        <splash density="port-xxhdpi" src="res/screens/android/splash-port-xxhdpi.png" />
+        <splash density="port-xxxhdpi" src="res/screens/android/splash-port-xxxhdpi.png" />
         <allow-intent href="market:*" />
     </platform>
     <platform name="ios">
+        <icon height="1024" src="res/icons/ios/icon-1024.png" width="1024" />
+        <icon height="29" src="res/icons/ios/icon-small.png" width="29" />
+        <icon height="58" src="res/icons/ios/icon-small@2x.png" width="58" />
+        <icon height="87" src="res/icons/ios/icon-small@3x.png" width="87" />
+        <icon height="40" src="res/icons/ios/icon-small-40.png" width="40" />
+        <icon height="80" src="res/icons/ios/icon-small-40@2x.png" width="80" />
+        <icon height="120" src="res/icons/ios/icon-small-40@3x.png" width="120" />
+        <icon height="50" src="res/icons/ios/icon-small-50.png" width="50" />
+        <icon height="100" src="res/icons/ios/icon-small-50@2x.png" width="100" />
+        <icon height="57" src="res/icons/ios/icon.png" width="57" />
+        <icon height="114" src="res/icons/ios/icon@2x.png" width="114" />
+        <icon height="60" src="res/icons/ios/icon-60.png" width="60" />
+        <icon height="120" src="res/icons/ios/icon-60@2x.png" width="120" />
+        <icon height="180" src="res/icons/ios/icon-60@3x.png" width="180" />
+        <icon height="72" src="res/icons/ios/icon-72.png" width="72" />
+        <icon height="144" src="res/icons/ios/icon-72@2x.png" width="144" />
+        <icon height="76" src="res/icons/ios/icon-76.png" width="76" />
+        <icon height="152" src="res/icons/ios/icon-76@2x.png" width="152" />
+        <icon height="167" src="res/icons/ios/icon-167.png" width="167" />
+        <icon height="167" src="res/icons/ios/icon-83.5@2x.png" width="167" />
+        <splash height="480" src="res/screens/ios/Default~iphone.png" width="320" />
+        <splash height="960" src="res/screens/ios/Default@2x~iphone.png" width="640" />
+        <splash height="1024" src="res/screens/ios/Default-Portrait~ipad.png" width="768" />
+        <splash height="2048" src="res/screens/ios/Default-Portrait@2x~ipad.png" width="1536" />
+        <splash height="1136" src="res/screens/ios/Default-568h@2x~iphone.png" width="640" />
+        <splash height="1334" src="res/screens/ios/Default-667h.png" width="750" />
+        <splash height="2208" src="res/screens/ios/Default-736h.png" width="1242" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
