@@ -245,8 +245,8 @@ var app = {
 			$$("#loginview").removeClass("modal-in");
         };
 
-        var failure = function() {
-			alert('Failed logging in to Trekker');
+        var failure = function(e) {
+			alert('Failed logging in to Trekker'+e);
         };
 		console.log("authenticate...");
 		var strtoSend = pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false);
