@@ -29,7 +29,7 @@ var throttle = "T";
 var setBTname = "N";
 var errorMsg = "E";
 
-var pwd = "0000        ";
+var space = "\x20";
 
 
 var $$ = Dom7;
@@ -196,7 +196,6 @@ var app = {
 					disconnectButton.dataset.deviceId = trekker.deviceId;
 					resultDiv.innerHTML = "";
 					app.authenticate();
-					app.showDetailPage();
 				};
 
 			ble.connect(trekker.deviceId, onConnect, app.onError);
@@ -243,13 +242,14 @@ var app = {
             //resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + messageInput.value + "<br/>";
             //resultDiv.scrollTop = resultDiv.scrollHeight;
 			$$("#loginview").removeClass("modal-in");
+			app.showDetailPage();
         };
 
         var failure = function(e) {
-			alert('Failed logging in to Trekker'+e);
+			alert('Failed logging in to Trekker\n'+e);
         };
 		console.log("authenticate...");
-		var strtoSend = pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false);
+		var strtoSend = pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false);
 		
 		console.log("send connect string"+strtoSend);
 		
@@ -271,7 +271,7 @@ var app = {
             );
         }		
 	},
-    sendDataStart: function(event) { // send data to Arduino
+    sendDataStart: function(event) {
 
         var success = function() {
             console.log("success");
