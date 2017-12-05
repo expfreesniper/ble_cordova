@@ -279,8 +279,8 @@ var app = {
             resultDiv.scrollTop = resultDiv.scrollHeight;
         };
 
-        var failure = function() {
-            alert("Failed writing data to the trekker le");
+        var failure = function(e) {
+            alert("Failed writing data to the trekker le\n"+e);
         };
 
 		var data = stringToBytes(prefix+powercmdON+suffix);
