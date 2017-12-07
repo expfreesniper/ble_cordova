@@ -239,8 +239,8 @@ var app = {
 	authenticate: function() { 
         var success = function() {
             console.log("authenticate success");
-            //resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + messageInput.value + "<br/>";
-            //resultDiv.scrollTop = resultDiv.scrollHeight;
+            resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false); + "<br/>";
+            resultDiv.scrollTop = resultDiv.scrollHeight;
 			$$("#loginview").removeClass("modal-in");
 			app.showDetailPage();
         };
@@ -276,7 +276,7 @@ var app = {
 
         var success = function() {
             console.log("success");
-            resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + messageInput.value + "<br/>";
+            resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + prefix+powercmdON+suffix + "<br/>";
             resultDiv.scrollTop = resultDiv.scrollHeight;
         };
 
