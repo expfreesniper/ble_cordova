@@ -247,9 +247,10 @@ var app = {
 
         var failure = function(e) {
 			alert('Failed logging in to Trekker\n'+e);
+			myApp.hidePreloader();
         };
 		console.log("authenticate...");
-				var strtoSend = $$("#numpad-inline").val();//pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false);
+		var strtoSend = $$("#numpad-inline").val();//pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false);
 		
 		console.log("send connect string"+strtoSend);
 		
@@ -281,6 +282,7 @@ var app = {
 
         var failure = function(e) {
             alert("Failed writing data to the trekker le\n"+e);
+			myApp.hidePreloader();
         };
 
 		var data = stringToBytes(prefix+powercmdON+suffix);
