@@ -20,7 +20,7 @@
 
 var prefix = "s";
 var suffix = "e";
-var login = "L";
+var login = "L";// total passw chars 12
 var userpwd = "U";
 var adminpwd = "A";
 var powercmdON = "PN";
@@ -29,7 +29,7 @@ var throttle = "T";
 var setBTname = "N";
 var errorMsg = "E";
 
-var space = "\x20";
+var space = " ";
 
 
 var $$ = Dom7;
@@ -239,7 +239,7 @@ var app = {
 	authenticate: function() { 
         var success = function() {
             console.log("authenticate success");
-            resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false); + "<br/>";
+            resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false); + "<br/>";
             resultDiv.scrollTop = resultDiv.scrollHeight;
 			$$("#loginview").removeClass("modal-in");
 			app.showDetailPage();
@@ -250,7 +250,7 @@ var app = {
 			myApp.hidePreloader();
         };
 		console.log("authenticate...");
-		var strtoSend = pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false);
+		var strtoSend = prefix+login+"1234        "+suffix+;//pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false);
 		
 		console.log("send connect string"+strtoSend);
 		
@@ -285,7 +285,7 @@ var app = {
 			myApp.hidePreloader();
         };
 
-		var data = stringToBytes(prefix+powercmdON+suffix);
+		var data = stringToBytes(prefix+powercmdON+suffix);//prefix+powercmdON+suffix;
         var deviceId = event.target.dataset.deviceId;
 
         //if (app.writeWithoutResponse) {
