@@ -250,11 +250,11 @@ var app = {
 			myApp.hidePreloader();
         };
 		console.log("authenticate...");
-		var strtoSend = $$("#numpad-inline").val();//pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false);
+		var strtoSend = pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false);
 		
 		console.log("send connect string"+strtoSend);
 		
-		var data = stringToBytes(strtoSend);
+		var data = stringToBytes(strtoSend.toString());
 		
         if (app.writeWithoutResponse) {
             ble.writeWithoutResponse(
