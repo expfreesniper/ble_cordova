@@ -249,7 +249,7 @@ var app = {
 			alert('Failed logging in to Trekker\n'+e);
         };
 		console.log("authenticate...");
-		var strtoSend = pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false);
+				var strtoSend = $$("#numpad-inline").val();//pad('\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',prefix+login+$$("#numpad-inline").val()+suffix,false);
 		
 		console.log("send connect string"+strtoSend);
 		
