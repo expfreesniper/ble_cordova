@@ -28,6 +28,7 @@ var powercmdOFF = "PF";
 var throttle = "T";
 var setBTname = "N";
 var errorMsg = "E";
+var StatusCmd = "S";
 
 var space = " ";
 
@@ -217,30 +218,94 @@ var app = {
     },
     onData: function(data) { // data received
         console.log(data);
-        resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + bytesToString(data) + "<br/>";
-        resultDiv.scrollTop = resultDiv.scrollHeight;
+		var result = bytesToString(data);
+		
+        //resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + bytesToString(data) + "<br/>";
+        //resultDiv.scrollTop = resultDiv.scrollHeight;
+		console.log("Received: " + bytesToString(data));
 		
 		levelBar = $$('.level');
 		
-		var battery = {"charging":false,"level":85};
+		// STATUS variables
+		var result_powerStatus = "F"; 
+		var result_throtleStatus = "000";
+		var result_throtleLimit = "000";
+		var result_batteryStatus = "00000";
 		
-		if (battery.charging) {
+		var resultsData = {
+						"charging":false,
+						"powerStatus":result_powerStatus,
+						"batteryStatus":result_batteryStatus,
+						"throtleStatus":result_throtleStatus,
+						"throtleLimit":result_throtleLimit,
+						};	
+		
+		/* Check Status */
+		// check if it starts with prefix
+		var prefix_res = result.substring(0,1);
+		var suffix_res = result.substring(result.length,-1);
+		var command_str = result.substring(1,1);
+	
+		// check if this is a string with correct prefix and suffix value
+		if (prefix_res===prefix && suffix_res===suffix){
+			if (command_str===errorMsg || command_str===StatusCmd){
+				// valid variables after prefixes
+				
+				// STATUS RESULTS
+				if (command_str===StatusCmd){
+					resultsData.powerStatus = result.substring(2,1);
+					resultsData.throtleStatus = parseFloat(result.substring(3,3),10).toFixed(2);
+					resultsData.throtleLimit = parseFloat(result.substring(6,3),10).toFixed(2);
+					resultsData.batteryStatus = parseFloat(result.substring(10,5),10).toFixed(2);
+				}
+				else if(command_str===errorMsg){
+					alert("Error:"+result.substring(1,(result.length-1)));
+				}
+			}
+			else{// INVALID variables after prefixes
+				alert.log("Wrong command format!");
+			}			
+		}
+		else{//INVALID prefix or suffix
+			alert.log("Wrong prefix && suffix format!");
+		}
+		// check if this is a string with correct start and end values
+		/* Check Status */
+		
+		// BATERY STATUS
+		if (resultsData.charging) {
 		  levelBar.addClass('charging');
-		} else if (battery.level > 65) {
+		} else if (resultsData.batteryStatus > 20000) {
 		  levelBar.addClass('high');
-		} else if (battery.level >= 35 ) {
+		} else if (resultsData.batteryStatus >= 12000 ) {
 		  levelBar.addClass('med');
 		} else {
 		  levelBar.addClass('low');
 		};
 		
+		resultsData.innerHTML = resultsData.batteryStatus;
+		
 		levelBar.css('width', level + '%');
+		
+		// POWER STATUS
+		if (resultsData.powerStatus==="F"){
+			sendButton.innerHTML = "START Engine";
+			$$(".leds").addClass("led-off");
+		}
+		else{
+			sendButton.innerHTML = "STOP Engine";
+			$$(".leds").addClass("led-on");
+		}
+		
+		// THROTTLE STATUS
+		
+
     },
 	authenticate: function() { 
         var success = function() {
             console.log("authenticate success");
-            resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false); + "<br/>";
-            resultDiv.scrollTop = resultDiv.scrollHeight;
+            //resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false); + "<br/>";
+            //resultDiv.scrollTop = resultDiv.scrollHeight;
 			$$("#loginview").removeClass("modal-in");
 			app.showDetailPage();
         };
@@ -276,8 +341,8 @@ var app = {
 
         var success = function() {
             console.log("success");
-            resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + prefix+powercmdON+suffix + "<br/>";
-            resultDiv.scrollTop = resultDiv.scrollHeight;
+            //resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + prefix+powercmdON+suffix + "<br/>";
+            //resultDiv.scrollTop = resultDiv.scrollHeight;
         };
 
         var failure = function(e) {
