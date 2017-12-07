@@ -189,7 +189,7 @@ var app = {
 					myApp.showPreloader();
 							//app.determineWriteType(peripheral);
 							//resultDiv.innerHTML = JSON.stringify(peripheral, null, 2);
-					app.writeWithoutResponse = false;
+					//app.writeWithoutResponse = false;
 					// subscribe for incoming data
 					ble.startNotification(trekker.deviceId, trekker.serviceUUID, trekker.rxCharacteristic, app.onData, app.onError);
 					sendButton.dataset.deviceId = trekker.deviceId;
@@ -256,21 +256,21 @@ var app = {
 		
 		var data = stringToBytes(strtoSend.toString());
 		
-        if (app.writeWithoutResponse) {
+        //if (app.writeWithoutResponse) {
             ble.writeWithoutResponse(
                 trekker.deviceId,
                 trekker.serviceUUID,
                 trekker.txCharacteristic,
                 data, success, failure
             );
-        } else {
+        /*} else {
             ble.write(
                 trekker.deviceId,
                 trekker.serviceUUID,
                 trekker.txCharacteristic,
                 data, success, failure
             );
-        }		
+        }*/	
 	},
     sendDataStart: function(event) {
 
@@ -288,21 +288,21 @@ var app = {
 		var data = stringToBytes(prefix+powercmdON+suffix);
         var deviceId = event.target.dataset.deviceId;
 
-        if (app.writeWithoutResponse) {
+        //if (app.writeWithoutResponse) {
             ble.writeWithoutResponse(
                 deviceId,
                 trekker.serviceUUID,
                 trekker.txCharacteristic,
                 data, success, failure
             );
-        } else {
+        /*} else {
             ble.write(
                 deviceId,
                 trekker.serviceUUID,
                 trekker.txCharacteristic,
                 data, success, failure
             );
-        }
+        }*/
 
     },
     disconnect: function(event) {
