@@ -42,6 +42,8 @@
   font-feature-settings: "liga";
 }
 
+
+.clear{clear:both;}
 .center{text-align:center;}
 .content-block-title{color:#fff;text-decoration: underline;}
 
@@ -68,13 +70,14 @@ input[type=range] {
 
 #mainPage {
     text-align:center;
-	margin-top: -15px;
+	margin-top: -20px;
 	box-shadow: 0 -2px 4px -1px rgba(0,0,0,.2), 0 -4px 5px 0 rgba(0,0,0,.14), 0 -1px 10px 0 rgba(0,0,0,.12);	
 }
 
 #detailPage {
     text-align:center;
     font-size: 2em;
+	margin: -50px auto;
 }
 
 #detailPage div {
@@ -194,16 +197,15 @@ button {
 
 
 .button {
-	
+	height: 100px;
+	margin: 20px auto;
 	border-radius: 50%;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    margin: 4px 2px;	
 	color: #fff;
 	font-weight: bold;
 	background-color: #538fbe;
-	padding: 55px;
 	font-size: 24px;
 	border: 1px solid #2d6898;
 	background-image: linear-gradient(bottom, rgb(73,132,180) 0%, rgb(97,155,203) 100%);
@@ -309,4 +311,61 @@ box-shadow: 0px 2px 0px #2b638f, 0px 1px 6px rgba(0,0,0,.4), inset 0px 1px 0px r
 
 .popupTrekker{
 	background: rgba(33, 150, 243, 0.5);
+}
+
+
+.led-box {
+  height: 30px;
+  width: 25%;
+  margin: 10px auto;
+  float: none;
+}
+
+.led-off {
+  margin: 0 auto;
+  width: 24px;
+  height: 24px;
+  background-color: #F00;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+  -webkit-animation: blinkRed 0.5s infinite;
+  -moz-animation: blinkRed 1s infinite;
+  -ms-animation: blinkRed 1s infinite;
+  -o-animation: blinkRed 1s infinite;
+  animation: blinkRed 1s infinite;
+}
+
+.led-on {
+  margin: 0 auto;
+  width: 24px;
+  height: 24px;
+  background-color: #008000;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #0e2d12 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+}
+
+@-webkit-keyframes blinkRed {
+    from { background-color: #F00; }
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+    to { background-color: #F00; }
+}
+@-moz-keyframes blinkRed {
+    from { background-color: #F00; }
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+    to { background-color: #F00; }
+}
+@-ms-keyframes blinkRed {
+    from { background-color: #F00; }
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+    to { background-color: #F00; }
+}
+@-o-keyframes blinkRed {
+    from { background-color: #F00; }
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+    to { background-color: #F00; }
+}
+@keyframes blinkRed {
+    from { background-color: #F00; }
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+    to { background-color: #F00; }
 }
