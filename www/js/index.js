@@ -250,7 +250,7 @@ var app = {
 			myApp.hidePreloader();
         };
 		console.log("authenticate...");
-		var strtoSend = prefix+login+"1234        "+suffix+;//pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false);
+		var strtoSend = prefix+login+"1234        "+suffix;//pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false);
 		
 		console.log("send connect string"+strtoSend);
 		
