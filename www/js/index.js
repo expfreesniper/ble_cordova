@@ -31,6 +31,7 @@ var errorMsg = "E";
 var StatusCmd = "S";
 
 var space = " ";
+var powerCmd = powercmdOFF;
 
 
 var $$ = Dom7;
@@ -194,7 +195,7 @@ var app = {
 					ble.startNotification(trekker.deviceId, trekker.serviceUUID, trekker.rxCharacteristic, app.onData, app.onError);
 					sendButton.dataset.deviceId = trekker.deviceId;
 					disconnectButton.dataset.deviceId = trekker.deviceId;
-					resultDiv.innerHTML = "";
+					//resultDiv.innerHTML = "";
 					app.authenticate();
 				};
 
@@ -241,10 +242,12 @@ var app = {
 		
 		/* Check Status */
 		// check if it starts with prefix
-		var prefix_res = result.substring(0,1);
-		var suffix_res = result.substring(result.length,-1);
-		var command_str = result.substring(1,1);
-	
+		var prefix_res = result.substr(0,1);
+		var suffix_res = result.substr(-1);
+		var command_str = result.substr(1,1);
+		
+		console.log(prefix_res+","+suffix_res+","+command_str);
+		
 		// check if this is a string with correct prefix and suffix value
 		if (prefix_res===prefix && suffix_res===suffix){
 			if (command_str===errorMsg || command_str===StatusCmd){
@@ -252,26 +255,30 @@ var app = {
 				
 				// STATUS RESULTS
 				if (command_str===StatusCmd){
-					resultsData.powerStatus = result.substring(2,1);
-					resultsData.throtleStatus = parseFloat(result.substring(3,3),10).toFixed(2);
-					resultsData.throtleLimit = parseFloat(result.substring(6,3),10).toFixed(2);
-					resultsData.batteryStatus = parseFloat(result.substring(10,5),10).toFixed(2);
+					resultsData.powerStatus = result.substr(2,1);
+					resultsData.throtleStatus = parseFloat(result.substr(3,3),10);
+					resultsData.throtleLimit = parseFloat(result.substr(6,3),10);
+					resultsData.batteryStatus = parseFloat(result.substr(9,5),10);
 				}
 				else if(command_str===errorMsg){
-					alert("Error:"+result.substring(1,(result.length-1)));
+					console.log("onDataError:"+result.substr(1,(result.length-1)));
 				}
 			}
 			else{// INVALID variables after prefixes
-				alert.log("Wrong command format!");
+				console.log("onDataError:Wrong command format!");
 			}			
 		}
 		else{//INVALID prefix or suffix
-			alert.log("Wrong prefix && suffix format!");
+			console.log("onDataError:Wrong prefix && suffix format!");
 		}
 		// check if this is a string with correct start and end values
 		/* Check Status */
 		
+		// THROTTLE STATUS 
+		$$("#throttleStatus").html("Throttle Status:"+resultsData.throttleStatus+"<br>Throttle Limit:"+resultsData.throtleLimit);
+		
 		// BATERY STATUS
+		console.log("BATTERY STATUS:"+resultsData.batteryStatus);
 		if (resultsData.charging) {
 		  levelBar.addClass('charging');
 		} else if (resultsData.batteryStatus > 20000) {
@@ -282,23 +289,23 @@ var app = {
 		  levelBar.addClass('low');
 		};
 		
-		resultsData.innerHTML = resultsData.batteryStatus;
-		
-		levelBar.css('width', level + '%');
+	
+		levelBar.css('width', resultsData.batteryStatus + '%');
 		
 		// POWER STATUS
+
 		if (resultsData.powerStatus==="F"){
 			sendButton.innerHTML = "START Engine";
-			$$(".leds").addClass("led-off");
+			$$(".leds").removeClass("led-on").addClass("led-off");
+			powerCmd = powercmdON;
+			console.log("POWER STATUS OFF:"+powerCmd);
 		}
 		else{
 			sendButton.innerHTML = "STOP Engine";
-			$$(".leds").addClass("led-on");
+			$$(".leds").removeClass("led-off").addClass("led-on");
+			powerCmd = powercmdOFF;
+			console.log("POWER STATUS ON:"+powerCmd);
 		}
-		
-		// THROTTLE STATUS
-		
-
     },
 	authenticate: function() { 
         var success = function() {
@@ -350,7 +357,8 @@ var app = {
 			myApp.hidePreloader();
         };
 
-		var data = stringToBytes(prefix+powercmdON+suffix);//prefix+powercmdON+suffix;
+		var data = stringToBytes(prefix+powerCmd+suffix);//prefix+powercmdON+suffix;
+		console.log("PowerON:"+prefix+powerCmd+suffix);
         var deviceId = event.target.dataset.deviceId;
 
         //if (app.writeWithoutResponse) {
