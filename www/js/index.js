@@ -275,7 +275,7 @@ var app = {
 		/* Check Status */
 		
 		// THROTTLE STATUS 
-		$$("#throttleStatus").html("Throttle Status:"+resultsData.throttleStatus+"<br>Throttle Limit:"+resultsData.throtleLimit);
+		$$("#throttleStatus").html("Throttle Status:"+resultsData.throtleStatus+"<br>Throttle Limit:"+resultsData.throtleLimit);
 		
 		// BATERY STATUS
 		console.log("BATTERY STATUS:"+resultsData.batteryStatus);
