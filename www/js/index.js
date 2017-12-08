@@ -179,8 +179,7 @@ var app = {
     },
     connect: function() {
 		console.log("connecting...");
-		$$("#indexview").addClass("active");
-		
+	
 		var pwd = $$("#numpad-inline").val().toString();
 		console.log("connecting string"+pwd);
 		if (pwd.length===4){
@@ -306,6 +305,7 @@ var app = {
             console.log("authenticate success");
             //resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + pad('            ',prefix+login+$$("#numpad-inline").val()+suffix,false); + "<br/>";
             //resultDiv.scrollTop = resultDiv.scrollHeight;
+			$$("#indexview").addClass("active");
 			$$("#loginview").removeClass("modal-in");
 			app.showDetailPage();
         };
@@ -346,7 +346,7 @@ var app = {
         };
 
         var failure = function(e) {
-            alert("Failed writing data to the trekker le\n"+e);
+            alert("Failed writing data to the Trekker\n"+e);
 			myApp.hidePreloader();
         };
 
@@ -386,7 +386,7 @@ var app = {
     },
     onError: function(reason) {
 		myApp.hidePreloader();
-        alert("ERROR: " + JSON.stringify(reason)); // real apps should use notification.alert
+        alert("ERROR: " + reason.errorDescription + "\n" + reason.errorMessage);//JSON.stringify(reason)); // real apps should use notification.alert
     }
 };
 
