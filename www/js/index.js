@@ -33,7 +33,6 @@ var StatusCmd = "S";
 var space = " ";
 var powerCmd = powercmdOFF;
 
-
 var $$ = Dom7;
 
 // Initialize your app
@@ -116,7 +115,7 @@ function pad(pad, str, padLeft) {
   }
 }
 
-// this is Nordic's UART service
+
 var trekker = {
     serviceUUID: 'FFE0',
     txCharacteristic: 'FFE1', // transmit is from the phone's perspective
@@ -129,6 +128,7 @@ var app = {
     initialize: function() {
         this.bindEvents();
         detailPage.hidden = true;
+		this.testBattery();
     },
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
@@ -137,7 +137,6 @@ var app = {
         disconnectButton.addEventListener('touchstart', this.disconnect, false);
         //deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
 		deviceList.addEventListener('touchstart', this.showLogin, true); 
-				;
     },
 	showLogin:function(event){
 		if (event.target.dataset.deviceId)
@@ -279,6 +278,17 @@ var app = {
 		
 		// BATERY STATUS
 		console.log("BATTERY STATUS:"+resultsData.batteryStatus);
+		if (resultsData.batteryStatus > 24000){
+			minBattery = 24000;
+			maxBattery = 48000;
+		}
+		else if (resultsData.batteryStatus <= 24000){
+			minBattery = 0;
+			maxBattery = 24000;			
+		}
+		
+		var levelBattery = parseFloat((resultsData.batteryStatus / maxBattery)*100,10);
+		
 		if (resultsData.charging) {
 		  levelBar.addClass('charging');
 		} else if (resultsData.batteryStatus > 20000) {
@@ -290,7 +300,7 @@ var app = {
 		};
 		
 	
-		levelBar.css('width', resultsData.batteryStatus + '%');
+		levelBar.css('width', levelBattery + '%');
 		
 		// POWER STATUS
 
@@ -378,6 +388,39 @@ var app = {
         }*/
 
     },
+	testBattery: function(){
+		levelBar = $$('.level');
+		var resultsData = {
+						"charging":false,
+						"powerStatus":"F",
+						"batteryStatus":24000
+						};
+						
+		if (resultsData.batteryStatus > 24000){
+			minBattery = 24000;
+			maxBattery = 48000;
+		}
+		else if (resultsData.batteryStatus <= 24000){
+			minBattery = 0;
+			maxBattery = 24000;			
+		}
+		
+		var levelBattery = parseFloat((resultsData.batteryStatus / maxBattery)*100,10);
+		
+		if (resultsData.charging) {
+		  levelBar.addClass('charging');
+		} else if (resultsData.batteryStatus > 20000) {
+		  levelBar.addClass('high');
+		} else if (resultsData.batteryStatus >= 12000 ) {
+		  levelBar.addClass('med');
+		} else {
+		  levelBar.addClass('low');
+		};
+		
+	
+		levelBar.css('width', levelBattery + '%');	
+		levelBar.html(levelBattery + '%');
+	},
     disconnect: function(event) {
         var deviceId = event.target.dataset.deviceId;
         ble.disconnect(deviceId, app.showMainPage, app.onError);
