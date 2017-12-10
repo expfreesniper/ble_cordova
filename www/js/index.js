@@ -280,10 +280,14 @@ var app = {
 		console.log("BATTERY STATUS:"+resultsData.batteryStatus);
 		if (resultsData.batteryStatus > 24000){
 			minBattery = 24000;
+			highBattery = 40000;
+			mediumBattery = 24000;
 			maxBattery = 48000;
 		}
 		else if (resultsData.batteryStatus <= 24000){
 			minBattery = 0;
+			highBattery = 20000;
+			mediumBattery = 12000;			
 			maxBattery = 24000;			
 		}
 		
@@ -291,9 +295,9 @@ var app = {
 		
 		if (resultsData.charging) {
 		  levelBar.addClass('charging');
-		} else if (resultsData.batteryStatus > 20000) {
+		} else if (resultsData.batteryStatus > highBattery) {
 		  levelBar.addClass('high');
-		} else if (resultsData.batteryStatus >= 12000 ) {
+		} else if (resultsData.batteryStatus >= mediumBattery ) {
 		  levelBar.addClass('med');
 		} else {
 		  levelBar.addClass('low');
@@ -393,15 +397,19 @@ var app = {
 		var resultsData = {
 						"charging":false,
 						"powerStatus":"F",
-						"batteryStatus":24000
+						"batteryStatus":18000
 						};
 						
 		if (resultsData.batteryStatus > 24000){
 			minBattery = 24000;
+			highBattery = 40000;
+			mediumBattery = 24000;
 			maxBattery = 48000;
 		}
 		else if (resultsData.batteryStatus <= 24000){
 			minBattery = 0;
+			highBattery = 20000;
+			mediumBattery = 12000;			
 			maxBattery = 24000;			
 		}
 		
@@ -409,9 +417,9 @@ var app = {
 		
 		if (resultsData.charging) {
 		  levelBar.addClass('charging');
-		} else if (resultsData.batteryStatus > 20000) {
+		} else if (resultsData.batteryStatus > highBattery) {
 		  levelBar.addClass('high');
-		} else if (resultsData.batteryStatus >= 12000 ) {
+		} else if (resultsData.batteryStatus >= mediumBattery ) {
 		  levelBar.addClass('med');
 		} else {
 		  levelBar.addClass('low');
